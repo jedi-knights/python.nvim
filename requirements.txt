@@ -1,5 +1,0 @@
-click
-jinja2
-pytest
-toml
-InquirerPy
