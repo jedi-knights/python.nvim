@@ -14,6 +14,8 @@ A comprehensive Neovim plugin that provides quality-of-life functionality for Py
 ### 🧪 **Testing & Debugging**
 - **Test Discovery**: Automatically find and run tests
 - **Test Runner**: Execute tests with pytest, unittest, and nose
+- **Advanced Pytest**: Interactive environment/marker selection, configuration management
+- **Test History**: Re-run previous tests and jump to failures
 - **Debug Integration**: Seamless debugging with debugpy
 - **Coverage**: View test coverage reports inline
 - **Test Navigation**: Jump between test files and implementations
@@ -37,6 +39,8 @@ A comprehensive Neovim plugin that provides quality-of-life functionality for Py
 - **Package Explorer**: Browse installed packages and their documentation
 - **Environment Inspector**: Inspect current Python environment
 - **Performance Profiling**: Profile Python code execution
+- **Task Runner**: Execute invoke tasks, make targets, and custom scripts
+- **Task History**: Track and re-run previous tasks
 
 ## 📦 Requirements
 
@@ -62,6 +66,25 @@ A comprehensive Neovim plugin that provides quality-of-life functionality for Py
   end,
 }
 ```
+
+### Using native `vim.pack` (Neovim ≥ 0.12)
+
+`vim.pack.add` does not run `setup()` for you — the follow-up call is explicit.
+Dependencies also need to be added separately.
+
+```lua
+vim.pack.add({
+  { src = "https://github.com/nvim-lua/plenary.nvim" },
+  { src = "https://github.com/folke/snacks.nvim" }, -- optional but recommended
+  { src = "https://github.com/jedi-knights/python.nvim" },
+})
+
+require("python").setup()
+```
+
+Pin to a tag or branch with `version = "..."`. `vim.pack.add` is idempotent —
+it clones on first run and does nothing on subsequent runs. Use
+`:lua vim.pack.update()` to pull new commits.
 
 ### Using [packer.nvim](https://github.com/wbthomason/packer.nvim)
 
@@ -175,6 +198,14 @@ require("python").setup({
 | `:PythonTest` | Run tests |
 | `:PythonDebug` | Start debugging session |
 | `:PythonREPL` | Open Python REPL |
+| `:PythonTask` | Show task picker (invoke, make, scripts) |
+| `:PythonTaskHistory` | Show task history picker |
+| `:PythonTaskRerun` | Re-run last task |
+| `:PythonPytestEnvironment` | Show pytest environment picker |
+| `:PythonPytestMarkers` | Show pytest marker picker |
+| `:PythonPytestConfig` | Show pytest configuration picker |
+| `:PythonPytestRerun` | Re-run last pytest command |
+| `:PythonPytestFailure` | Jump to last test failure |
 
 ### Keymaps (Default)
 
@@ -188,6 +219,13 @@ require("python").setup({
 | `<leader>pt` | Run tests |
 | `<leader>pd` | Start debugging |
 | `<leader>pr` | Open REPL |
+| `<leader>ptt` | Show task picker |
+| `<leader>pth` | Show task history |
+| `<leader>ptr` | Re-run last task |
+| `<leader>pte` | Pytest environment picker |
+| `<leader>ptm` | Pytest marker picker |
+| `<leader>ptc` | Pytest config picker |
+| `<leader>ptf` | Jump to test failure |
 
 ### Interactive Pickers
 
@@ -195,6 +233,11 @@ require("python").setup({
 - **Package Picker**: `:PythonPackagePicker` - Browse and manage packages
 - **Test Picker**: `:PythonTestPicker` - Discover and run tests
 - **Import Picker**: `:PythonImportPicker` - Organize imports
+- **Task Picker**: `:PythonTask` - Discover and run tasks (invoke, make, scripts)
+- **Task History Picker**: `:PythonTaskHistory` - Browse and re-run previous tasks
+- **Pytest Environment Picker**: `:PythonPytestEnvironment` - Select pytest environments
+- **Pytest Marker Picker**: `:PythonPytestMarkers` - Select pytest markers
+- **Pytest Config Picker**: `:PythonPytestConfig` - Browse pytest configuration
 
 ## 🏗️ Architecture
 
@@ -208,6 +251,8 @@ python.nvim/
 │   ├── commands.lua          # User commands
 │   ├── ui.lua               # UI components and pickers
 │   ├── runner.lua           # Code execution and testing
+│   ├── pytest.lua           # Advanced pytest integration
+│   ├── tasks.lua            # Task runner (invoke, make, scripts)
 │   ├── formatter.lua        # Code formatting
 │   ├── linter.lua           # Code linting
 │   ├── debugger.lua         # Debugging integration
