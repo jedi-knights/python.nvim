@@ -140,8 +140,8 @@ if vim.g.mapleader then
     -- Package picker
     vim.keymap.set("n", "<leader>pp", "<cmd>PythonPackagePicker<cr>", keymap_opts)
     
-    -- Import picker
-    vim.keymap.set("n", "<leader>pi", "<cmd>PythonImportPicker<cr>", keymap_opts)
+    -- Import picker (uses <leader>pm — "pi" is taken by PythonInstall)
+    vim.keymap.set("n", "<leader>pm", "<cmd>PythonImportPicker<cr>", keymap_opts)
     
     -- Information
     vim.keymap.set("n", "<leader>p?", "<cmd>PythonInfo<cr>", keymap_opts)
